@@ -3,6 +3,8 @@ const cors = require("cors");
 
 const app = express();
 
+console.log(process.argv)
+
 // Middle Ware
 
 app.use(express.json());

@@ -1,13 +1,14 @@
-const config = require('../../config.js')
+const config = require('../../config')
 const express = require('express');
 const mongodb = require('mongodb');
 const router = express.Router();
 
 async function loadPostsCollection() {
-    const client = await mongodb.MongoClient.connect(config.dblink(), {
+    const client = await mongodb.MongoClient.connect(config.dblink, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
+
 
     return client.db('Website-Cluster-0').collection('submits');
 }

@@ -1,23 +1,22 @@
-const config = require('../../config.js')
+const config = require('../../config')
 const express = require('express');
 const mongodb = require('mongodb');
 const router = express.Router();
 
 async function loadPostsCollection() {
-    const client = await mongodb.MongoClient.connect(config.dblink(), {
+
+    const client = await mongodb.MongoClient.connect(config.dblink, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
 
+    console.log("Connected")
+
     return client.db('Website-Cluster-0').collection('blog');
 }
 
-// I want to get the post that equates to the current month, then get the current month - 1
-
-
 // Get Posts
 router.get('/:monthsback', async (req, res) => {
-
     const blogs = await loadPostsCollection();
     const result = await blogs.find()
         .sort({createdAt: -1})
@@ -30,7 +29,9 @@ router.get('/:monthsback', async (req, res) => {
 
 // Add Submits
 router.post('/', async (req, res) => {
+
     const blogs = await loadPostsCollection();
+
     await blogs.insertOne({
             title: req.body.title,
             body: req.body.body,
