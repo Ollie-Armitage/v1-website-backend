@@ -10,8 +10,6 @@ async function loadPostsCollection() {
         useUnifiedTopology: true
     });
 
-    console.log("Connected")
-
     return client.db('Website-Cluster-0').collection('blog');
 }
 
