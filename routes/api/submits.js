@@ -2,6 +2,7 @@ const config = require('../../config')
 const express = require('express');
 const mongodb = require('mongodb');
 const router = express.Router();
+const authorize = require("../../auth-middleware")
 
 async function loadPostsCollection() {
     const client = await mongodb.MongoClient.connect(config.dblink, {
@@ -14,7 +15,7 @@ async function loadPostsCollection() {
 }
 
 // Get Posts
-router.get('/', async (req, res) => {
+router.get('/', authorize("submits:read"), async (req, res) => {
     const submits = await loadPostsCollection();
     res.send(await submits.find({}).toArray())
 })
@@ -34,7 +35,7 @@ router.post('/', async (req, res) => {
 })
 
 // Delete Submits
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authorize("submits:delete"), async (req, res) => {
     const submits = await loadPostsCollection();
     submits.deleteOne({
         _id: new mongodb.ObjectID(req.params.id)

@@ -10,12 +10,15 @@ console.log(process.argv)
 app.use(express.json());
 app.use(cors());
 
-const submits = require('./server/routes/api/submits');
-const blogs = require('./server/routes/api/blog');
+const submits = require('./routes/api/submits');
+const blogs = require('./routes/api/blog');
+const token = require('./routes/api/token');
 
-app.use('/api/submits', submits);
-app.use('/api/blog', blogs);
 
-const port = process.env.port || 8080;
+app.use('/submits', submits);
+app.use('/blog', blogs);
+app.use('/token', token)
+
+const port = process.env.port || 5000;
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
