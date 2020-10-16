@@ -5,10 +5,19 @@ const config = require('../../config.js')
 
 // Request a token
 
-router.get('/', (req, res) => {
-    const payload = {
+router.post('/', (req, res) => {
+
+    let payload = {
         name: "Ollie",
-        scopes: "submits:read"
+        scopes: []
+    }
+
+    if(req.body.password === config.adminPassword){
+        console.log("Building admin token")
+        payload.scopes.push("submits:read")
+    }
+    else{
+
     }
 
     const token = jwt.sign(payload, config.JWT_SECRET)
