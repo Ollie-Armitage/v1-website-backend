@@ -2,6 +2,7 @@ const config = require('../../config')
 const express = require('express');
 const mongodb = require('mongodb');
 const router = express.Router();
+const authenticate = require('auth-middleware')
 
 async function loadPostsCollection() {
 
@@ -25,8 +26,8 @@ router.get('/:monthsback', async (req, res) => {
     res.status(200).send(result)
 })
 
-// Add Submits
-router.post('/', async (req, res) => {
+// Add Blog Posts
+router.post('/', authenticate("blog:write"), async (req, res) => {
 
     const blogs = await loadPostsCollection();
 
@@ -40,7 +41,7 @@ router.post('/', async (req, res) => {
 })
 
 // Delete Submits
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authenticate("blog:delete"), async (req, res) => {
     const blogs = await loadPostsCollection();
     await blogs.deleteOne({
         _id: new mongodb.ObjectID(req.params.id)

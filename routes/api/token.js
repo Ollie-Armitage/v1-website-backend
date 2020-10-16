@@ -15,6 +15,9 @@ router.post('/', (req, res) => {
     if(req.body.password === config.adminPassword){
         console.log("Building admin token")
         payload.scopes.push("submits:read")
+        payload.scopes.push("blog:write")
+        payload.scopes.push("submits:delete")
+        payload.scopes.push("blog:delete")
     }
     else{
 
