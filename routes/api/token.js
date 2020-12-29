@@ -8,7 +8,6 @@ const config = require('../../config.js')
 router.post('/', (req, res) => {
 
     let payload = {
-        name: "Ollie",
         scopes: []
     }
 
@@ -18,6 +17,7 @@ router.post('/', (req, res) => {
         payload.scopes.push("blog:write")
         payload.scopes.push("submits:delete")
         payload.scopes.push("blog:delete")
+        payload.scopes.push("projects:write")
     }
     else{
 

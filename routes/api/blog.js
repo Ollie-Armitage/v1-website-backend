@@ -5,23 +5,14 @@ const router = express.Router();
 const authorize = require("../../auth-middleware")
 
 
-async function loadPostsCollection() {
+// Get Blog Posts
+router.get('/', async (req, res) => {
 
-    const client = await mongodb.MongoClient.connect(config.dblink, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
+    const blogs = await config.loadCollection("blogs");
 
-    return client.db('Website-Cluster-0').collection('blog');
-}
-
-// Get Posts
-router.get('/:monthsback', async (req, res) => {
-    const blogs = await loadPostsCollection();
     const result = await blogs.find()
         .sort({createdAt: -1})
-        .limit(3)
-        .skip(parseInt(req.params.monthsback))
+        .limit(req.body.limit || 0)
         .toArray()
 
     res.status(200).send(result)
@@ -30,7 +21,7 @@ router.get('/:monthsback', async (req, res) => {
 // Add Blog Posts
 router.post('/', authorize("blog:write"), async (req, res) => {
 
-    const blogs = await loadPostsCollection();
+    const blogs = await config.loadCollection("blogs");
 
     await blogs.insertOne({
             title: req.body.title,
@@ -41,11 +32,11 @@ router.post('/', authorize("blog:write"), async (req, res) => {
     res.status(201).send();
 })
 
-// Delete Submits
-router.delete('/:id', authorize("blog:delete"), async (req, res) => {
-    const blogs = await loadPostsCollection();
+// Delete Blog Posts
+router.delete('/', authorize("blog:delete"), async (req, res) => {
+    const blogs = await config.loadCollection("blogs");
     await blogs.deleteOne({
-        _id: new mongodb.ObjectID(req.params.id)
+        _id: new mongodb.ObjectID(req.body.id)
     })
 
     res.status(200).send();
