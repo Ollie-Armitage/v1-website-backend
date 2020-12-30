@@ -8,7 +8,7 @@ const authorize = require("../../auth-middleware")
 // Get Blog Posts
 router.get('/', async (req, res) => {
 
-    const blogs = await config.loadCollection("blogs");
+    const blogs = await config.loadCollection("blog");
 
     const result = await blogs.find()
         .sort({createdAt: -1})
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 // Add Blog Posts
 router.post('/', authorize("blog:write"), async (req, res) => {
 
-    const blogs = await config.loadCollection("blogs");
+    const blogs = await config.loadCollection("blog");
 
     await blogs.insertOne({
             title: req.body.title,
@@ -34,7 +34,7 @@ router.post('/', authorize("blog:write"), async (req, res) => {
 
 // Delete Blog Posts
 router.delete('/', authorize("blog:delete"), async (req, res) => {
-    const blogs = await config.loadCollection("blogs");
+    const blogs = await config.loadCollection("blog");
     await blogs.deleteOne({
         _id: new mongodb.ObjectID(req.body.id)
     })

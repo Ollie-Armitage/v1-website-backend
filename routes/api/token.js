@@ -7,6 +7,12 @@ const config = require('../../config.js')
 
 router.post('/', (req, res) => {
 
+    if(!req.body.password){
+        res.status(401).send("Bad Auth Request")
+        return;
+    }
+
+
     let payload = {
         scopes: []
     }
@@ -14,17 +20,18 @@ router.post('/', (req, res) => {
     if(req.body.password === config.adminPassword){
         console.log("Building admin token")
         payload.scopes.push("submits:read")
-        payload.scopes.push("blog:write")
         payload.scopes.push("submits:delete")
+        payload.scopes.push("blog:write")
         payload.scopes.push("blog:delete")
         payload.scopes.push("projects:write")
+        payload.scopes.push("projects:delete")
     }
     else{
-
+        res.status(401).send("Bad Auth Request.")
     }
 
     const token = jwt.sign(payload, config.JWT_SECRET)
-    res.send(token);
+    res.status(201).send(token);
 })
 
 module.exports = router
