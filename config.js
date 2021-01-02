@@ -6,15 +6,18 @@ const dblink =  "mongodb+srv://ollie-0:"
     + process.env.dbname
     + "?retryWrites=true&w=majority";
 
+
+
 async function loadCollection(collection) {
+
+    if(!collection) return;
+
     const client = await mongodb.MongoClient.connect(dblink, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
 
-    if(client){
-        console.log("Loaded Collection: " + collection);
-    }
+    console.log("Loaded Collection: " + collection);
 
     return client.db('Website-Cluster-0').collection(collection);
 }
