@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     const projects = await config.loadCollection("projects");
 
     const result = await projects.find()
-        .sort({createdAt: -1})
+        .sort({createdAt: 1})
         .limit(req.body.limit || 0)
         .toArray()
 
