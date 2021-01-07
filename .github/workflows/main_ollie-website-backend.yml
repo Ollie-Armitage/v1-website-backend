@@ -31,5 +31,5 @@ jobs:
       with:
         app-name: 'ollie-website-backend'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_4ad8b33a53a94b64854960105683fb67 }}
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_55f06ed98fe04506a34228ec9ce3c73f }}
         package: .
